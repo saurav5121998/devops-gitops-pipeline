@@ -1,0 +1,52 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: fastapi-app-prod
+  namespace: argocd
+  # Auto-delete child resources when this App is deleted
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+
+  # ── Source: where ArgoCD looks for the Helm chart ──────────────
+  source:
+    repoURL: https://github.com/YOUR_USERNAME/devops-gitops-pipeline
+    targetRevision: main
+    path: helm/fastapi-app
+    helm:
+      valueFiles:
+        - values.yaml        # base values
+      # override specific values at deploy time
+      parameters:
+        - name: image.tag
+          value: latest      # CI updates values.yaml so this stays in sync
+
+  # ── Destination: which cluster + namespace to deploy into ──────
+  destination:
+    server: https://kubernetes.default.svc   # in-cluster
+    namespace: fastapi-prod
+
+  # ── Sync policy: ArgoCD auto-syncs when Git changes ───────────
+  syncPolicy:
+    automated:
+      prune: true            # delete resources removed from Git
+      selfHeal: true         # revert manual kubectl changes (prevents drift)
+      allowEmpty: false
+    syncOptions:
+      - CreateNamespace=true
+      - PrunePropagationPolicy=foreground
+      - PruneLast=true
+    retry:
+      limit: 3
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m
+
+  # ── Health checks ArgoCD watches before marking sync Done ──────
+  ignoreDifferences:
+    - group: apps
+      kind: Deployment
+      jsonPointers:
+        - /spec/replicas    # ignore HPA-managed replica count
