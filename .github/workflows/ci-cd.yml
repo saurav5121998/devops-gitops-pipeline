@@ -34,8 +34,7 @@ jobs:
           pip install flake8 black
 
       - name: Lint with flake8
-        run: flake8 app/ --max-line-length=100 --exclude=__pycache__
-
+        run: flake8 app/ --max-line-length=100 --exclude=__pycache__,venv
       - name: Format check with black
         run: black --check app/
 
