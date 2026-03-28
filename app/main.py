@@ -7,10 +7,11 @@ import os
 app = FastAPI(
     title="DevOps Demo API",
     description="A production-ready FastAPI service with health checks and metrics",
-    version="1.0.0"
+    version="1.0.0",
 )
 
 # ---------- Models ----------
+
 
 class Item(BaseModel):
     id: int
@@ -18,11 +19,13 @@ class Item(BaseModel):
     price: float
     in_stock: bool = True
 
+
 class HealthResponse(BaseModel):
     status: str
     version: str
     environment: str
     uptime_seconds: float
+
 
 # ---------- In-memory store (demo only) ----------
 
@@ -34,6 +37,7 @@ ITEMS: List[Item] = [
 ]
 
 # ---------- Routes ----------
+
 
 @app.get("/", tags=["root"])
 def root():
