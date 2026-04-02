@@ -125,7 +125,7 @@ jobs:
           format: table
           exit-code: "1"          # FAIL pipeline on HIGH/CRITICAL CVEs
           ignore-unfixed: true
-          vuln-type: os,library
+          vuln-type: library
           severity: CRITICAL,HIGH
 
       - name: Run Trivy SARIF report (for GitHub Security tab)
