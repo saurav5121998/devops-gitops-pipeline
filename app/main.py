@@ -1,16 +1,15 @@
+import os
+import time
+from typing import List
+
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-from typing import List
-import time
-import os
 
 app = FastAPI(
     title="DevOps Demo API",
     description="A production-ready FastAPI service with health checks and metrics",
     version="1.0.0",
 )
-
-# ---------- Models ----------
 
 
 class Item(BaseModel):
@@ -27,16 +26,12 @@ class HealthResponse(BaseModel):
     uptime_seconds: float
 
 
-# ---------- In-memory store (demo only) ----------
-
 START_TIME = time.time()
 ITEMS: List[Item] = [
     Item(id=1, name="Widget A", price=9.99),
     Item(id=2, name="Widget B", price=19.99),
     Item(id=3, name="Widget C", price=4.99, in_stock=False),
 ]
-
-# ---------- Routes ----------
 
 
 @app.get("/", tags=["root"])
