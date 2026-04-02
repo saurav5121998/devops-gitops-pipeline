@@ -84,3 +84,4 @@ def delete_item(item_id: int):
             ITEMS.pop(i)
             return
     raise HTTPException(status_code=404, detail=f"Item {item_id} not found")
+ 
