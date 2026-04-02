@@ -200,3 +200,4 @@ kubectl apply -f k8s/argocd/application.yaml
 3. **Terraform state corruption from concurrent applies** — Added DynamoDB lock table. Terraform will fail fast with a clear error if another apply is in progress.
 # updated
 # refresh
+# refresh
