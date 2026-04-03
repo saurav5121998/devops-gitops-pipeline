@@ -1,7 +1,7 @@
 replicaCount: 2
 
 image:
-  repository: YOUR_DOCKERHUB_USERNAME/fastapi-devops-app
+  repository: sauravdocker151/fastapi-devops-app
   pullPolicy: IfNotPresent
   tag: a31755a
 
