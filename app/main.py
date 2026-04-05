@@ -3,6 +3,7 @@ import time
 from typing import List
 
 from fastapi import FastAPI, HTTPException
+from prometheus_fastapi_instrumentator import Instrumentator
 from pydantic import BaseModel
 
 app = FastAPI(
@@ -10,6 +11,8 @@ app = FastAPI(
     description="A production-ready FastAPI service with health checks and metrics",
     version="1.0.0",
 )
+
+Instrumentator().instrument(app).expose(app)
 
 
 class Item(BaseModel):
