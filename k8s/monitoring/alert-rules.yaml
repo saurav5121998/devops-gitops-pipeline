@@ -1,0 +1,28 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: fastapi-alerts
+  namespace: monitoring
+  labels:
+    release: monitoring
+spec:
+  groups:
+    - name: fastapi
+      rules:
+        - alert: HighErrorRate
+          expr: rate(http_requests_total{namespace="fastapi-prod",status=~"4.."}[5m]) > 0.1
+          for: 2m
+          labels:
+            severity: warning
+          annotations:
+            summary: "High error rate on FastAPI"
+            description: "Error rate is above 0.1 req/s for 2 minutes"
+
+        - alert: PodDown
+          expr: up{namespace="fastapi-prod"} == 0
+          for: 1m
+          labels:
+            severity: critical
+          annotations:
+            summary: "FastAPI pod is down"
+            description: "A FastAPI pod has been down for 1 minute"
