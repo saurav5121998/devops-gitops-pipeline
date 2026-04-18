@@ -3,7 +3,7 @@ replicaCount: 2
 image:
   repository: sauravdocker151/fastapi-devops-app
   pullPolicy: IfNotPresent
-  tag: 89a1e70
+  tag: 76e03c3
 
 nameOverride: ""
 fullnameOverride: ""
